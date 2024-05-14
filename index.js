@@ -11,6 +11,9 @@ app.use(express.json())
 const API_KEY= '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'
 app.post('/questions/:topic/:level', async (req, res) => {
   const { topic, level } = req.params;
+app.get("/",(req,res)=>{
+  res.send("hello")
+})
 
   const options = {
     method: 'POST',
