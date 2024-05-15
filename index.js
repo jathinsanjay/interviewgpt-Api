@@ -81,6 +81,262 @@ def print_solution(board):
 # Example usage:
 N = 8
 solve_n_queens(N)
+
+Q))))CAMEL BANANA PROBLEM
+total_bananas = int(input("No. Of bananas at start : "))
+distance = int(input("Distance to be covered  : "))
+load_capacity = int(input("Maximum No. of bananas camel can carry at a time : "))
+
+bananas_lost = 0
+start = total_bananas
+for i in range(distance) :
+    while start > 0 :
+        start = start-load_capacity
+        if start == 1 :
+            bananas_lost = bananas_lost-1
+        bananas_lost = bananas_lost+2
+    bananas_lost = bananas_lost-1
+    start = total_bananas - bananas_lost
+    if start == 0:
+        break
+print("Total bananas delivered : ", start )
+
+Q)))WATER JUG PROBLEM
+def water_jug_problem(jug1_cap, jug2_cap, target_amount):
+    # Initialize the jugs and the possible actions
+    j1 = 0
+    j2 = 0
+    actions = [("fill", 1), ("fill", 2), ("empty", 1), ("empty", 2), ("pour", 1, 2), ("pour", 2, 1)]
+    # Create an empty set to store visited states
+    visited = set()
+    # Create a queue to store states to visit
+    queue = [(j1, j2, [])]
+    while queue:
+        # Dequeue the front state from the queue
+        j1, j2, seq = queue.pop(0)
+        # If this state has not been visited before, mark it as visited
+        if (j1, j2) not in visited:
+            visited.add((j1, j2))
+            # If this state matches the target amount, return the sequence of actions taken to get to this state
+            if j1 == target_amount:
+                return seq
+            # Generate all possible next states from this state
+            for action in actions:
+                if action[0] == "fill":
+                    if action[1] == 1:
+                        next_state = (jug1_cap, j2)
+                    else:
+                        next_state = (j1, jug2_cap)
+                elif action[0] == "empty":
+                    if action[1] == 1:
+                        next_state = (0, j2)
+                    else:
+                        next_state = (j1, 0)
+                else:
+                    if action[1] == 1:
+                        amount = min(j1, jug2_cap - j2)
+                        next_state = (j1 - amount, j2 + amount)
+                    else:
+                        amount = min(j2, jug1_cap - j1)
+                        next_state = (j1 + amount, j2 - amount)
+                # Add the next state to the queue if it has not been visited before
+                if next_state not in visited:
+                    next_seq = seq + [action]
+                    queue.append((next_state[0], next_state[1], next_seq))
+    # If the queue becomes empty without finding a solution, return None
+    return None
+
+result = water_jug_problem(5, 3, 1)
+print(result)
+
+Q)))TICTACTOE PROBLEM
+# Set up the game board as a list
+board = ["-", "-", "-",
+        "-", "-", "-",
+        "-", "-", "-"]
+
+# Define a function to print the game board
+def print_board():
+    print(board[0] + " | " + board[1] + " | " + board[2])
+    print(board[3] + " | " + board[4] + " | " + board[5])
+    print(board[6] + " | " + board[7] + " | " + board[8])
+
+# Define a function to handle a player's turn
+def take_turn(player):
+    print(player + "'s turn.")
+    position = input("Choose a position from 1-9: ")
+    while position not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+        position = input("Invalid input. Choose a position from 1-9: ")
+    position = int(position) - 1
+    while board[position] != "-":
+        position = int(input("Position already taken. Choose a different position: ")) - 1
+    board[position] = player
+    print_board()
+
+# Define a function to check if the game is over
+def check_game_over():
+    # Check for a win
+    if (board[0] == board[1] == board[2] != "-") or \
+    (board[3] == board[4] == board[5] != "-") or \
+    (board[6] == board[7] == board[8] != "-") or \
+    (board[0] == board[3] == board[6] != "-") or \
+    (board[1] == board[4] == board[7] != "-") or \
+    (board[2] == board[5] == board[8] != "-") or \
+    (board[0] == board[4] == board[8] != "-") or \
+    (board[2] == board[4] == board[6] != "-"):
+        return "win"
+    # Check for a tie
+    elif "-" not in board:
+        return "tie"
+    # Game is not over
+    else:
+        return "play"
+
+# Define the main game loop
+def play_game():
+    print_board()
+    current_player = "X"
+    game_over = False
+    while not game_over:
+        take_turn(current_player)
+        game_result = check_game_over()
+        if game_result == "win":
+            print(current_player + " wins!")
+            game_over = True
+        elif game_result == "tie":
+            print("It's a tie!")
+            game_over = True
+        else:
+            # Switch to the other player
+            current_player = "O" if current_player == "X" else "X"
+
+# Start the game
+play_game()
+
+Q)))CRIPTHARMATIC PROBLEM
+from itertools import combinations, permutations
+def replacements():
+    for comb in combinations(range(10), 8):
+        for perm in permutations(comb):
+            if perm[0] * perm[1] != 0:
+                yield dict(zip('BASELGMS', perm))
+a, b, c = 'BASE', 'BALL', 'GAMES'
+for replacement in replacements():
+    f = lambda x: sum(replacement[e] * 10**i for i, e in enumerate(x[::-1]))
+    if f(a) + f(b) == f(c):
+        print('{} + {} = {}'.format(f(a), f(b), f(c)))
+
+Q)))KMEANS
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+
+
+x = [1,2,2,1,8,9,8,9]
+y = [1,2,1,2,8,9,9,8]
+
+plt.scatter(x,y)
+plt.show()
+
+
+data = list(zip(x,y))
+inertias = []
+
+for i in range(1,8):
+  kmeans = KMeans(n_clusters=i)
+  kmeans.fit(data)
+  inertias.append(kmeans.inertia_)
+
+plt.plot(range(1,8),inertias,marker="o")
+plt.show()
+
+
+kmeans = KMeans(n_clusters=2)
+kmeans.fit(data)
+plt.scatter(x,y,c=kmeans.labels_)
+plt.show()
+
+Q)))KNN
+import matplotlib.pyplot as plt
+from sklearn.neighbors import KNeighborsClassifier
+
+
+
+x = [1,2,2,1,8,9,8,9]
+y = [1,2,1,2,8,9,9,8]
+classes = [0,0,0,0,1,1,1,1]
+plt.scatter(x,y,c=classes)
+plt.show()
+
+data = list(zip(x,y))
+knn = KNeighborsClassifier(n_neighbors=2)
+knn.fit(data,classes)
+
+new_x = 8.5
+new_y = 8.5
+
+new_point = [(new_x,new_y)]
+prediction = knn.predict(new_point)
+print(prediction)
+
+Q)))GRAPH COLOURING
+V = 4
+
+def print_solution(color):
+    print("Solution Exists: Following are the assigned colors")
+    print(" ".join(map(str, color)))
+
+def is_safe(v, graph, color, c):
+    # Check if the color 'c' is safe for the vertex 'v'
+    for i in range(V):
+        if graph[v][i] and c == color[i]:
+            return False
+    return True
+
+def graph_coloring_util(graph, m, color, v):
+    # Base case: If all vertices are assigned a color, return true
+    if v == V:
+        return True
+
+    # Try different colors for the current vertex 'v'
+    for c in range(1, m + 1):
+        # Check if assignment of color 'c' to 'v' is fine
+        if is_safe(v, graph, color, c):
+            color[v] = c
+
+            # Recur to assign colors to the rest of the vertices
+            if graph_coloring_util(graph, m, color, v + 1):
+                return True
+
+            # If assigning color 'c' doesn't lead to a solution, remove it
+            color[v] = 0
+
+    # If no color can be assigned to this vertex, return false
+    return False
+
+def graph_coloring(graph, m):
+    color = [0] * V
+
+    # Call graph_coloring_util() for vertex 0
+    if not graph_coloring_util(graph, m, color, 0):
+        print("Solution does not exist")
+        return False
+
+    print_solution(color)
+    return True
+
+# Driver code
+if _name_ == "_main_":
+    graph = [
+        [0, 1, 1, 1],
+        [1, 0, 1, 0],
+        [1, 1, 0, 1],
+        [1, 0, 1, 0],
+    ]
+
+    m = 3
+    graph_coloring(graph, m)
+        
+
 //////////////simple reflexive agent////////////////
 class SimpleReflexAgent:
     def _init_(self):
